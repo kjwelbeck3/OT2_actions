@@ -21,8 +21,8 @@ setup(
     entry_points={
         'console_scripts': [
             'demo_robot = demo.demo_robot:main',
-            'action_server = demo.demo_action_server:main',
-            'action_client = demo.demo_action_client:main'
+            'action_server = demo.action_server:main',
+            'action_client = demo.action_client:main'
         ],
     },
 )

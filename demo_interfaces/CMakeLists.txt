@@ -11,6 +11,7 @@ find_package(ament_cmake REQUIRED)
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
+find_package(builtin_interfaces REQUIRED)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -25,7 +26,27 @@ if(BUILD_TESTING)
 endif()
 
 
+set(msg_files
+  "msg/JobHeader.msg"
+  "msg/OT2Job.msg"
+)
+
+set(srv_files
+  "srv/ExecuteJob.srv"
+)
+
+set(action_files
+  "action/OT2Job.action"
+)
+
+set(msa_dependencies
+  builtin_interfaces
+)
+
 rosidl_generate_interfaces( ${PROJECT_NAME}
-  "action/SequenceCounter.action"
+  ${msg_files}
+  ${srv_files}
+  ${action_files}
+  DEPENDENCIES ${msa_dependencies}
 )
 ament_package()
