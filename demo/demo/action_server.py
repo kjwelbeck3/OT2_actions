@@ -49,7 +49,7 @@ class DemoActionServer(Node):
         self.get_logger().info(".. protocol config path: {}".format(job.pc_path))
         self.get_logger().info(".. protocol config: {}".format(job.protocol_config))
 
-        path = '/root/config/'
+        path = '/root/config/temp'
         if not os.path.exists(path):
             os.mkdir(path)
 

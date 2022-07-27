@@ -52,6 +52,7 @@ class DemoActionClient(Node):
 
         goal_msg.job.robot_config = robot_config
         goal_msg.job.protocol_config = protocol_config
+        goal_msg.job.simulate = True
         
         self._action_client.wait_for_server()
 
@@ -87,7 +88,7 @@ class DemoActionClient(Node):
         self.get_logger().info("--error message: {}".format(result.error_msg))
         # if not result.success:
         #     self.get_logger().info("Error Message: " + result.error_msg)
-        rclpy.shutdown()
+        # rclpy.shutdown()
 
 
 def main(args=None):

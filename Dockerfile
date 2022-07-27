@@ -15,6 +15,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     gnupg2 \
     lsb-release \
+    openssh-client \
     && rm -rf /var/lib/apt/lists/*
 
 # install ros2 foxy-base
@@ -28,13 +29,16 @@ RUN curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | apt
 RUN echo "source $ROS_ROOT/setup.bash" >> ~/.bashrc
 
 # creating, downloading resource directories ros packages and sourcing an overlay
-RUN mkdir -p $ROS_WS/src/demo && mkdir -p $ROS_WS/src/demo_interfaces
+RUN mkdir -p $ROS_WS/src/demo \
+    && mkdir -p $ROS_WS/src/demo_interfaces \
+    && mkdir -p /root/config/temp
 WORKDIR /root
 COPY resources/test_config.yaml /root/test_config.yaml
 RUN git clone -b dev-kyle https://github.com/KPHippe/ot2_driver.git \
     && pip3 install -r ot2_driver/requirements.txt \
     && useradd user \
-    && chown user:user ot2_driver 
+    && chown user:user ot2_driver \
+    && mkdir -p /root/
 WORKDIR $ROS_WS
 COPY demo/ src/demo
 COPY demo_interfaces/ src/demo_interfaces
