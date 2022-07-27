@@ -1,4 +1,5 @@
-string file_path
+string rc_path
+string pc_path
 ---
 bool success
 string error_msg

@@ -1,5 +1,7 @@
 import time
 import subprocess
+import yaml
+import os
 
 # from argparse import Action
 import rclpy
@@ -29,6 +31,22 @@ class DemoActionServer(Node):
 
         self.get_logger().info(".. protocol config path: {}".format(job.pc_path))
         self.get_logger().info(".. protocol config: {}".format(job.protocol_config))
+
+        path = '/root/config/'
+        if not os.path.exists(path):
+            os.mkdir(path)
+        if job.rc_path=='None':
+            self.get_logger().info("write to /root/config/robot_config.yaml file")
+            with open(path+'robot_config.yaml', 'w',encoding = "utf-8") as rc_file:
+                rc_file.write(job.robot_config)
+        if job.pc_path=='None':
+            self.get_logger().info("write to /root/config/protocol_config.yaml file")
+            with open(path+'protocol_config.yaml','w',encoding = "utf-8") as pc_file:
+                pc_file.write(job.protocol_config)
+        if job.rc_path=='None':
+            with open('/root/ros_ws/robot_config.yaml', 'w',encoding = "utf-8") as rc_file:
+                rc_file.write(job.robot_config)
+
 
 ###  KYLE COMMAND
 # cmdpython3 ot2_driver_ssh.py -rc ./robot_config.yaml -pc ./document.yaml -v -s 
