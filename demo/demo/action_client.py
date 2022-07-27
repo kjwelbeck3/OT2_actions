@@ -16,6 +16,9 @@ class DemoActionClient(Node):
         self.srv = self.create_service(ExecuteJob,'execute_job',self.exectute_job_callback)
     
     def exectute_job_callback(self,request,response):
+        """
+
+        """
         rc_config = None
         pc_config = None
         try:
@@ -23,13 +26,14 @@ class DemoActionClient(Node):
         except IOError:
             response.error_msg = "No such file or directory:" + request.rc_path
             response.success = False
-            raise ValueError("No such file or directory:" + request.rc_path)
+            return response
+            
         try:
             pc_config = yaml.dump(yaml.safe_load(open(request.pc_path)))
         except IOError:
             response.error_msg = "No such file or directory:" + request.pc_path
             response.success = False
-            raise ValueError("No such file or directory:" + request.pc_path) 
+            return response
 
         response.success = True
         self.send_goal(protocol_config=pc_config,robot_config=rc_config)
@@ -38,6 +42,8 @@ class DemoActionClient(Node):
 
 
     def send_goal(self, pc_path=None, rc_path=None, protocol_config="testing 1 2", robot_config="testing 3 4"):
+        """
+        """
         goal_msg = OT2Job.Goal()
         if rc_path is not None:
             goal_msg.job.rc_path = rc_path
