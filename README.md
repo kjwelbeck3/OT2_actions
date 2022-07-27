@@ -8,4 +8,4 @@
 
 ### Dependencies
  - The robot-terminal/action-server depends on
-   - [git@github.com:kjwelbeck3/ot2_driver.git -b dev-kyle](https://github.com/kjwelbeck3/ot2_driver.git)
+   - [git@github.com:kjwelbeck3/ot2_driver.git -b dev-kyle](https://github.com/kjwelbeck3/ot2_driver/tree/dev-kyle)
