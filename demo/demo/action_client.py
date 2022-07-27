@@ -71,8 +71,8 @@ class DemoActionClient(Node):
             return
         self.get_logger().info('Goal accepted')
 
-        # self.goal_result_future = goal_handle.get_result_async()
-        # self.goal_result_future.add_done_callback(self.goal_result_callback)
+        self.goal_result_future = goal_handle.get_result_async()
+        self.goal_result_future.add_done_callback(self.goal_result_callback)
 
     def goal_result_callback(self, future):
         result = future.result().result
@@ -81,7 +81,7 @@ class DemoActionClient(Node):
         self.get_logger().info("--error message: {}".format(result.error_msg))
         # if not result.success:
         #     self.get_logger().info("Error Message: " + result.error_msg)
-        # rclpy.shutdown()
+        rclpy.shutdown()
 
 
 def main(args=None):
