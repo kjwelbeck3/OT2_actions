@@ -1,8 +1,11 @@
 import rclpy
 from rclpy.action import ActionClient
 from rclpy.node import Node
-
+import yaml
 from demo_interfaces.action import OT2Job
+from demo_interfaces.msg import OT2Job as OT2Jobmsg
+from demo_interfaces.msg import JobHeader
+from demo_interfaces.srv import ExecuteJob
 
 class DemoActionClient(Node):
     
@@ -10,6 +13,29 @@ class DemoActionClient(Node):
         super().__init__('demo_action_client')
         self._action_client = ActionClient(self, OT2Job, 'OT2')
         # self.heartbeat_publisher = self.create_publisher()
+        self.srv = self.create_service(ExecuteJob,'execute_job',self.exectute_job_callback)
+    
+    def exectute_job_callback(self,request,response):
+        rc_config = None
+        pc_config = None
+        try:
+            rc_config = yaml.dump(yaml.safe_load(open(request.rc_path)))
+        except IOError:
+            response.error_msg = "No such file or directory:" + request.rc_path
+            response.success = False
+            raise ValueError("No such file or directory:" + request.rc_path)
+        try:
+            pc_config = yaml.dump(yaml.safe_load(open(request.pc_path)))
+        except IOError:
+            response.error_msg = "No such file or directory:" + request.pc_path
+            response.success = False
+            raise ValueError("No such file or directory:" + request.pc_path) 
+
+        response.success = True
+        self.send_goal(protocol_config=pc_config,robot_config=rc_config)
+
+        return response
+
 
     def send_goal(self, pc_path=None, rc_path=None, protocol_config="testing 1 2", robot_config="testing 3 4"):
         goal_msg = OT2Job.Goal()
@@ -61,7 +87,7 @@ class DemoActionClient(Node):
 def main(args=None):
     rclpy.init(args=args)
     demo_action_client = DemoActionClient()
-    future = demo_action_client.send_goal()
+    #future = demo_action_client.send_goal()
     rclpy.spin(demo_action_client)
 
 if __name__ == '__main__':
