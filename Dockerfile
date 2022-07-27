@@ -29,9 +29,13 @@ RUN echo "source $ROS_ROOT/setup.bash" >> ~/.bashrc
 
 # creating, downloading ros packages and sourcing an overlay
 RUN mkdir -p $ROS_WS/src/demo && mkdir -p $ROS_WS/src/demo_interfaces
+WORKDIR /root
+COPY resources/test_config.yaml /root/test_config.yaml
+RUN git clone -b dev-kyle https://github.com/KPHippe/ot2_driver.git && pip3 install -r ot2_driver/requirements.txt
 WORKDIR $ROS_WS
 COPY demo/ src/demo
 COPY demo_interfaces/ src/demo_interfaces
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-colcon-common-extensions \
     build-essential \

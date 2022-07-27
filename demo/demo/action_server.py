@@ -1,5 +1,6 @@
 import time
 import subprocess
+import yaml
 
 # from argparse import Action
 import rclpy
@@ -7,6 +8,8 @@ from rclpy.action import ActionServer
 from rclpy.node import Node
 
 from demo_interfaces.action import OT2Job
+
+
 
 class DemoActionServer(Node):
     def __init__(self):
@@ -19,19 +22,65 @@ class DemoActionServer(Node):
 
     def action_callback(self, goal_handle):
         job = goal_handle.request.job
-        pc_path = job.pc_path
+
+        ## uncommenting to test hard-coded job_path !!!!!!######!!!!!
+        # pc_path = job.pc_path
+        # rc_path = job.rc_path
+        # simulate = job.simulate
+
+        simulate = True
+        python_file_path = "/root/ot2_driver/ot2_driver/ot2_driver_ssh.py"
+        rc_document_path = "/root/config/temp/rc_document.yaml"
+        pc_document_path = "/root/config/temp/pc_document.yaml"
+        rc_path = "/root/config/test_config.yaml"
+        pc_path = "/root/ot2_driver/ot2_driver/protopiler/example_configs/basic_config.yaml"
+        
+        robot_config = job.robot_config
+        protocol_config = job.protocol_config
         
         ## log/print the recieved Job
         self.get_logger().info("Recieved New Job Request...")
-
         self.get_logger().info(".. robot config path: {}".format(job.rc_path))
         self.get_logger().info(".. robot config: {}".format(job.robot_config))
-
         self.get_logger().info(".. protocol config path: {}".format(job.pc_path))
         self.get_logger().info(".. protocol config: {}".format(job.protocol_config))
 
-###  KYLE COMMAND
-# cmdpython3 ot2_driver_ssh.py -rc ./robot_config.yaml -pc ./document.yaml -v -s 
+        if pc_path == "None":
+            if rc_path == "None":
+                rc_path = rc_document_path
+                string2yamlFile(robot_config, rc_path)
+            pc_path = pc_document_path
+            string2yamlFile(protocol_config, pc_path)
+        
+        success = False
+        cmd = ["python3", python_file_path, "-rc", rc_path, "-pc", pc_path, "-v"]
+        if simulate:
+            cmd.append("-s")
+
+        completed_process = subprocess.run(cmd, capture_output=True, text=True)  #check=True
+        goal_handle.succeed()
+        
+        self.get_logger().info("Completed Process")
+        self.get_logger().info("args")
+        self.get_logger().info(str(completed_process.args))
+        self.get_logger().info("returncode")
+        self.get_logger().info(str(completed_process.returncode))
+        self.get_logger().info("stderr")
+        self.get_logger().info(completed_process.stderr)
+        self.get_logger().info("stdout")
+        self.get_logger().info(completed_process.stdout)
+
+
+        result = OT2Job.Result()
+        result.error_msg = completed_process.stderr
+
+        if not completed_process.returncode:
+            success = True
+        result.success = success
+
+        return result
+
+
 
         # seq_str = [str(x) for x in seq_int]
         # self.get_logger().info("Received: [" +",".join(seq_str) +"]")
@@ -67,12 +116,12 @@ class DemoActionServer(Node):
                 
         #         time.sleep(1)
 
-        success = True
-        goal_handle.succeed()
+        
+def string2yamlFile(string, file_name):
+    dict_ = yaml.safe_load(string)
 
-        result = OT2Job.Result()
-        result.success = success
-        return result
+    with open(file_name, "w") as yaml_file:
+        yaml.dump(dict_, yaml_file)
 
 
 def main(args=None):
