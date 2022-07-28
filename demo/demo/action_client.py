@@ -8,12 +8,20 @@ from demo_interfaces.msg import JobHeader
 from demo_interfaces.srv import ExecuteJob
 
 class DemoActionClient(Node):
-    
+    """
+
+    """
     def __init__(self):
+        """
+        
+        """
         super().__init__('demo_action_client')
         self._action_client = ActionClient(self, OT2Job, 'OT2')
         # self.heartbeat_publisher = self.create_publisher()
         self.srv = self.create_service(ExecuteJob,'execute_job',self.exectute_job_callback)
+
+        self.logger().info("OT2 Action Client running!")
+        self.logger().info("Send rc_path and pc_path with /execute_job service call")
     
     def exectute_job_callback(self,request,response):
         """
@@ -41,8 +49,9 @@ class DemoActionClient(Node):
         return response
 
 
-    def send_goal(self, pc_path=None, rc_path=None, protocol_config="testing 1 2", robot_config="testing 3 4"):
+    def send_goal(self, pc_path=None, rc_path=None, protocol_config="", robot_config=""):
         """
+
         """
         goal_msg = OT2Job.Goal()
         if rc_path is not None:
@@ -56,12 +65,11 @@ class DemoActionClient(Node):
         
         self._action_client.wait_for_server()
 
-        print("sending goal")
+        print("Sending goal to action server ...")
 
         self.goal_future = self._action_client.send_goal_async(goal_msg) #, feedback_callback=self.goal_feedback_callback)
         self.goal_future.add_done_callback(self.goal_respond_callback)
         
-        # return self._action_client.send_goal_async(goal_msg)
 
 
     def goal_feedback_callback(self,feed):
@@ -83,9 +91,9 @@ class DemoActionClient(Node):
 
     def goal_result_callback(self, future):
         result = future.result().result
-        self.get_logger().info("Result:")
+        self.get_logger().info("Result from action server:")
         self.get_logger().info("--success: {}".format(result.success))
-        self.get_logger().info("--error message: {}".format(result.error_msg))
+        self.get_logger().info("--message: {}".format(result.error_msg))
         # if not result.success:
         #     self.get_logger().info("Error Message: " + result.error_msg)
         # rclpy.shutdown()
