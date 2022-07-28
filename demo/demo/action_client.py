@@ -20,6 +20,8 @@ class DemoActionClient(Node):
         # self.heartbeat_publisher = self.create_publisher()
         self.srv = self.create_service(ExecuteJob,'execute_job',self.exectute_job_callback)
 
+        self.get_logger().info("OT2 Action Client running!")
+        self.get_logger().info("Send rc_path and pc_path with /execute_job service call")
         
     
     def exectute_job_callback(self,request,response):
@@ -103,8 +105,7 @@ def main(args=None):
     demo_action_client = DemoActionClient()
     #future = demo_action_client.send_goal()
     rclpy.spin(demo_action_client)
-    demo_action_client.logger().info("OT2 Action Client running!")
-    demo_action_client.logger().info("Send rc_path and pc_path with /execute_job service call")
+    
 
 if __name__ == '__main__':
     main()

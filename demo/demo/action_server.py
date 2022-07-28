@@ -27,6 +27,9 @@ class DemoActionServer(Node):
             'OT2', 
             self.action_callback
         )
+
+        self.get_logger().info("OT2 Action Server running!")
+        self.get_logger().info("Awaiting robot and protocol configuration from action client ...")
         
 
     def action_callback(self, goal_handle):
