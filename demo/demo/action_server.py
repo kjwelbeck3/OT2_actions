@@ -27,9 +27,6 @@ class DemoActionServer(Node):
             'OT2', 
             self.action_callback
         )
-
-        self.logger().info("OT2 Action Server running!")
-        self.logger().info("Awaiting robot and protocol configuration from action client ...")
         
 
     def action_callback(self, goal_handle):
@@ -123,6 +120,8 @@ def main(args=None):
 
     try:
         rclpy.spin(action_server)
+        action_server.logger().info("OT2 Action Server running!")
+        action_server.logger().info("Awaiting robot and protocol configuration from action client ...")
     except KeyboardInterrupt:
         pass
 
