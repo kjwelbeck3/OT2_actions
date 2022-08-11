@@ -1,0 +1,4 @@
+demo_interfaces/EmergencyAlert
+---
+bool success
+string error_msg

@@ -1,4 +1,4 @@
-demo_interfaces/JobHeader header
+demo_interfaces/Header header
 string robot_config
 string protocol_config
 string rc_path None

@@ -29,10 +29,14 @@ endif()
 set(msg_files
   "msg/JobHeader.msg"
   "msg/OT2Job.msg"
+  "msg/OT2Progress.msg"
+  "msg/Header"
+  "msg/EmergencyAlert.msg"
 )
 
 set(srv_files
   "srv/ExecuteJob.srv"
+  "srv/RaiseEmergency.srv"
 )
 
 set(action_files
