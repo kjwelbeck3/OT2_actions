@@ -1,4 +1,4 @@
-demo_interfaces/EmergencyAlert
+demo_interfaces/EmergencyAlert emergencyalert
 ---
 bool success
 string error_msg
