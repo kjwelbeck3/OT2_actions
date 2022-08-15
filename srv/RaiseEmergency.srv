@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 demo_interfaces/EmergencyAlert emergencyalert
+=======
+demo_interfaces/EmergencyAlert alert
+>>>>>>> 3e32e714120723cc0a591128e381772877cfaab0
 ---
 bool success
 string error_msg

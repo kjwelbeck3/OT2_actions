@@ -3,4 +3,4 @@ demo_interfaces/OT2Job job
 bool success
 string error_msg
 ---
-string temp_feedback
+demo_interfaces/JobProgress progress

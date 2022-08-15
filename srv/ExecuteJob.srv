@@ -1,5 +1,6 @@
 string rc_path
 string pc_path
+string robot_ip
 bool simulate False
 ---
 bool success

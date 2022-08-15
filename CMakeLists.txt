@@ -29,9 +29,10 @@ endif()
 set(msg_files
   "msg/JobHeader.msg"
   "msg/OT2Job.msg"
-  "msg/OT2Progress.msg"
-  "msg/Header"
+  "msg/JobProgress.msg"
+  "msg/Header.msg"
   "msg/EmergencyAlert.msg"
+  "msg/Heartbeat.msg"
 )
 
 set(srv_files
