@@ -23,3 +23,5 @@ float32 phase_percentage
 
 ### If necessary, or possible placeholder
 builtin_interfaces/Duration time_elapsed
+
+string progress_msg

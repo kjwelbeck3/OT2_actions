@@ -1,3 +1,3 @@
 demo_interfaces/Header header
 string message
-bool emergency
+bool isEmergency
