@@ -38,6 +38,7 @@ set(msg_files
 set(srv_files
   "srv/ExecuteJob.srv"
   "srv/RaiseEmergency.srv"
+  "srv/StartJob.srv"
 )
 
 set(action_files
